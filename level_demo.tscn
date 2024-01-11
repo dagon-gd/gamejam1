@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cut1v4p7f68x5"]
+[gd_scene load_steps=15 format=3 uid="uid://cut1v4p7f68x5"]
 
 [ext_resource type="Script" path="res://level_demo.gd" id="1_262bs"]
 [ext_resource type="PackedScene" uid="uid://bi0ensk61bpv5" path="res://classes/Character/Character.tscn" id="1_fy51g"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://wup87kat5xaw" path="res://custom/models/key1.tscn" id="10_wy4kg"]
 [ext_resource type="PackedScene" uid="uid://c7yqwkbolyqcq" path="res://assets/room.tscn" id="10_y6qw0"]
 [ext_resource type="Texture2D" uid="uid://c3r781ixwsiqc" path="res://import/Trailer_Park/Textures/wallpaper.png" id="11_6c48e"]
+[ext_resource type="PackedScene" uid="uid://b0rl2wv0tag3l" path="res://assets/bed_02.tscn" id="12_ruex7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e1n1a"]
 albedo_color = Color(0.67281, 0.448868, 0.328523, 1)
@@ -55,6 +56,7 @@ transform = Transform3D(-0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, -0.258819
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2, 12)
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 use_collision = true
 
 [node name="Floor" type="CSGBox3D" parent="CSGCombiner3D"]
@@ -78,14 +80,14 @@ size = Vector3(34, 8, 14.3262)
 [node name="Doorway" parent="CSGCombiner3D/Room7" index="0"]
 transform = Transform3D(7.71397e-08, 0, 0.588248, 0, 1, 0, -1.00002, 0, 1.31136e-07, -10.6527, -1.79087, -6.58418)
 
+[node name="interior" parent="CSGCombiner3D/Room7" index="1"]
+transform = Transform3D(1, 0, 9.80549e-13, 0, 0.999988, 0, -9.80549e-13, 0, 1, -0.0103664, -0.655533, -0.195557)
+size = Vector3(32, 10.3209, 13)
+
 [node name="Doorway2" type="CSGBox3D" parent="CSGCombiner3D/Room7"]
 transform = Transform3D(7.71397e-08, 0, 0.588248, 0, 0.999999, 0, -1.00002, 0, 1.31136e-07, 16.014, -1.08344, 1.74913)
 operation = 2
 size = Vector3(3, 4.55127, 4)
-
-[node name="interior" parent="CSGCombiner3D/Room7" index="2"]
-transform = Transform3D(1, 0, 9.80549e-13, 0, 0.999988, 0, -9.80549e-13, 0, 1, -0.0103664, -0.655533, -0.195557)
-size = Vector3(32, 10.3209, 13)
 
 [node name="Room6" parent="CSGCombiner3D" instance=ExtResource("10_y6qw0")]
 transform = Transform3D(4.52987e-08, 0, -0.6, 0, 0.624, 0, 0.6, 0, 4.52987e-08, -9, 2.7, 20)
@@ -129,6 +131,9 @@ material = SubResource("StandardMaterial3D_muafr")
 transform = Transform3D(-7.43094e-08, 0, -2.4, 0, 1, 0, 1.7, 0, -1.04907e-07, 18, 2.85736, 29.7981)
 size = Vector3(1, 4.71472, 3.40381)
 material = SubResource("StandardMaterial3D_muafr")
+
+[node name="Bed_02" parent="." instance=ExtResource("12_ruex7")]
+transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 9.50328, 0.575796, 13.1904)
 
 [editable path="CSGCombiner3D/Room8"]
 [editable path="CSGCombiner3D/Room7"]
