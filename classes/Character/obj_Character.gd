@@ -2,6 +2,11 @@ extends CharacterBody3D
 
 class_name Character
 
+## self explanitory
+@export var walkSpeed = 3
+
+var crouchSpeed = 1
+
 
 @onready var pivot_camera := $CameraPivot
 
@@ -9,8 +14,8 @@ class_name Character
 
 @onready var footsteps := $Footsteps
 
-## self explanitory
-@export var speed : float = 3.0
+
+var speed : float = 3.0
 
 ## self explanitory
 @export var jumpheight : float = 4.0
@@ -39,6 +44,7 @@ var flashlighting : bool = false:
 		else:
 			
 			pivot_camera.flashlight.light_color = Color(0,0,0,0)
+
 
 ## enable or disable player movement
 @export var enableInput : bool = true
@@ -101,6 +107,8 @@ var crouching : bool :
 			footsteps.timer.wait_time = 1.25 / speed
 
 func _ready():
+	
+	pivot_model.visible = false
 
 	footsteps.timer.wait_time = 1.25 / speed
 
@@ -116,6 +124,10 @@ func _unhandled_input(event):
 	if Input.is_action_just_released("action_flashlight"):
 
 		flashlighting = not flashlighting
+		
+		if canFlashlight:
+			
+			$FlashlightSound.play()
 
 
 func _physics_process(delta):
@@ -151,13 +163,13 @@ func _physics_process(delta):
 
 		crouching = true
 		
-		speed = 1
+		speed = crouchSpeed
 		
 	else:
 		
 		crouching = false
 		
-		speed = 3
+		speed = walkSpeed
 
 
 func _process(delta):

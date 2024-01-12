@@ -6,8 +6,6 @@ class_name Door
 enum OPEN_TYPES {SWING, PUSH}
 
 
-@onready var model := $Node3D
-
 ## door starts out locked and must be unlocked via the 'UnlockDoor' action
 @export var locked : bool
 
@@ -38,7 +36,7 @@ var opened : bool :
 
 		openPlayer.play()
 
-var openSound1 = load("res://assets/sounds/dooropen_1.wav")
+var openSound1 = load("res://assets/sounds/snake_dooropen_1.wav")
 
 var openSound2 = load("res://assets/sounds/dooropen_2.wav")
 
@@ -57,9 +55,9 @@ var lockedPlayer : AudioStreamPlayer3D
 		
 		if reverseOpen:
 			
-			return initPosition - transform.basis.x
+			return initPosition - transform.basis.x / 3
 			
-		return initPosition + transform.basis.x
+		return initPosition + transform.basis.x / 3
 
 
 @onready var initRotation : Vector3 = rotation
@@ -76,6 +74,18 @@ var lockedPlayer : AudioStreamPlayer3D
 
 
 func _ready():
+	
+	if has_node("direction"):
+
+		$direction.visible = false
+
+	if type == TYPES.AUTO:
+
+		Global.level_ready.connect(RunEvents)
+
+	if not area == null:
+
+		area.body_entered.connect(_on_area_3d_body_entered)
 
 	openPlayer = AudioStreamPlayer3D.new()
 
@@ -90,6 +100,8 @@ func _ready():
 		OPEN_TYPES.PUSH:
 
 			openPlayer.stream = openSound2
+			
+			openPlayer.max_db = -4
 
 	openPlayer.max_polyphony = 8
 
@@ -106,7 +118,7 @@ func Open():
 
 	if locked:
 
-		lockedPlayer.pitch_scale = randf_range(0.98, 1.02)
+		lockedPlayer.pitch_scale = randf_range(0.48, 0.52)
 
 		lockedPlayer.play()
 
@@ -129,7 +141,7 @@ func Open():
 					endRotation,
 					
 					1
-				)
+				).set_trans(Tween.TRANS_QUAD)
 				
 				opened = true
 				
@@ -146,7 +158,7 @@ func Open():
 					initRotation,
 					
 					1
-				)
+				).set_trans(Tween.TRANS_QUAD)
 		
 				opened = false
 				
@@ -164,8 +176,8 @@ func Open():
 					
 					endPosition,
 					
-					1
-				)
+					0.5
+				).set_trans(Tween.TRANS_SPRING)
 				
 				opened = true
 				
@@ -181,7 +193,7 @@ func Open():
 					
 					initPosition,
 					
-					1
-				)
+					0.5
+				).set_trans(Tween.TRANS_SPRING)
 		
 				opened = false

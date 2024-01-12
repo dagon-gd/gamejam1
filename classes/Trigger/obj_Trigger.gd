@@ -23,17 +23,7 @@ signal triggered
 
 var events : Array[Event]
 
-@onready var area : Area3D :
-	
-	get:
-		
-		if self is Door:
-			
-			return $Node3D/Area3D
-			
-		else:
-			
-			return $Area3D
+@onready var area : Area3D = $Area3D
 
 
 var index : int = 0
@@ -47,9 +37,14 @@ var enabled : bool = true :
 		enabled = d
 		
 		visible = enabled
+		
+var triggeredOnce : bool
 
 ## set how the trigger will be triggered
 @export var type : TYPES
+
+## will trigger only once then never again
+@export var triggerOnce : bool
 
 
 func _init():
@@ -58,6 +53,8 @@ func _init():
 
 
 func _ready():
+	
+	$direction.visible = false
 
 	if type == TYPES.AUTO:
 
@@ -68,9 +65,13 @@ func _ready():
 
 func _on_area_3d_body_entered(body):
 
-	if body == get_tree().current_scene.player and type == TYPES.TOUCH:
+	if body is Character and type == TYPES.TOUCH:
 
 		RunEvents()
+
+		if self is Door:
+
+			call("Open")
 
 
 func RunEvents():
@@ -78,6 +79,11 @@ func RunEvents():
 	if not enabled:
 
 		return
+
+	if triggerOnce and triggeredOnce:
+
+		return
+
 
 	if self is Door and not self.locked and not self.runEventsIfUnlocked:
 
@@ -92,6 +98,8 @@ func RunEvents():
 	for event in events:
 
 		if event.ConditionsMet():
+			
+			triggeredOnce = true
 
 			event.Start()
 
